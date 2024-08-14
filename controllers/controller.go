@@ -56,7 +56,6 @@ func ReadTeam(c *gin.Context) {
 		return
 	}
 
-	c.BindJSON(&id)
 	processors.ProcessReadTeam(c, &id)
 
 }

@@ -38,7 +38,7 @@ func ProcessReadTeam(c *gin.Context, id *int) {
 	response, err := repositories.SelectTeam(id)
 
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, gin.H{"status_code": http.StatusBadRequest})
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"status_code": http.StatusInternalServerError})
 	} else {
 		c.IndentedJSON(http.StatusOK, response)
 	}

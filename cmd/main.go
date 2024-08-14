@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	handlers "github.com/matthewleonardson/ffref-api/controllers"
 	"github.com/matthewleonardson/ffref-api/database"
@@ -16,7 +19,7 @@ func main() {
 	router.GET("/team", handlers.ReadTeams)
 	router.GET("/team/:id", handlers.ReadTeam)
 
-	router.Run(":3000")
+	router.Run(fmt.Sprintf(":%s", os.Getenv("API_PORT")))
 
 	defer database.DB.Db.Close()
 
