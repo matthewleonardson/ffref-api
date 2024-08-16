@@ -34,3 +34,8 @@ type RosterSlotSelectionDTO struct {
 	ProjectedPoints *float32 `json:"projected_points"`
 	ActualPoints    *float32 `json:"actual_points"`
 }
+
+type PlayerSelectionDTO struct {
+	ID         *int    `json:"id"`
+	PlayerName *string `json:"player_name"`
+}

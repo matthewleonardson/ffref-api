@@ -89,3 +89,15 @@ func ProcessCreateRosterSlot(c *gin.Context, rosterSlotDTO *dto.RosterSlotInsert
 	}
 
 }
+
+func ProcessReadPlayer(c *gin.Context, name *string) {
+
+	response, err := repositories.SelectPlayerByName(name)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+	} else {
+		c.IndentedJSON(http.StatusOK, dto.MapPlayerSelectionDTO(response))
+	}
+
+}

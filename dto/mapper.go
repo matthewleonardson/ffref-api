@@ -62,3 +62,14 @@ func MapRosterSlotSelectionDTO(rosterSlot *domain.RosterSlot) *RosterSlotSelecti
 	return &dto
 
 }
+
+func MapPlayerSelectionDTO(player *domain.Player) *PlayerSelectionDTO {
+
+	var dto PlayerSelectionDTO
+
+	dto.ID = player.ID
+	dto.PlayerName = player.PlayerName
+
+	return &dto
+
+}

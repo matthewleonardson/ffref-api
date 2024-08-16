@@ -19,6 +19,7 @@ func main() {
 	router.GET("/team", handlers.ReadTeams)
 	router.POST("/rosterslot", handlers.CreateRosterSlot)
 	router.GET("/team/:id", handlers.ReadTeam)
+	router.GET("/player/:name", handlers.ReadPlayer)
 
 	router.Run(fmt.Sprintf(":%s", os.Getenv("API_PORT")))
 

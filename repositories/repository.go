@@ -79,7 +79,7 @@ func SelectTeam(id *int) (*domain.Team, error) {
 
 func SelectPlayerByName(name *string) (*domain.Player, error) {
 
-	query := `SELECT id, player_name, created_at, updated_at FROM players WHERE player_name = @name`
+	query := `SELECT id, player_name, created_at, updated_at FROM players WHERE UPPER(player_name) = UPPER(@name)`
 
 	args := pgx.NamedArgs{
 		"name": *name,
