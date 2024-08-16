@@ -85,7 +85,7 @@ func ProcessCreateRosterSlot(c *gin.Context, rosterSlotDTO *dto.RosterSlotInsert
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
 	} else {
-		c.IndentedJSON(http.StatusOK, updatedRosterSlot)
+		c.IndentedJSON(http.StatusOK, dto.MapRosterSlotSelectionDTO(updatedRosterSlot))
 	}
 
 }

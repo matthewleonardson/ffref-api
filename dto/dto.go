@@ -22,3 +22,15 @@ type RosterSlotInsertionDTO struct {
 	ProjectedPoints *float32 `json:"projected_points"`
 	ActualPoints    *float32 `json:"actual_points"`
 }
+
+type RosterSlotSelectionDTO struct {
+	ID              *int     `json:"id"`
+	PlayerID        *int     `json:"player_id"`
+	TeamID          *int     `json:"team_id"`
+	Week            *int     `json:"week"`
+	Year            *int     `json:"year"`
+	Position        *string  `json:"position"`
+	Benched         *bool    `json:"benched"`
+	ProjectedPoints *float32 `json:"projected_points"`
+	ActualPoints    *float32 `json:"actual_points"`
+}
