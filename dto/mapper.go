@@ -28,3 +28,19 @@ func MapTeamSelectionDTO(team *domain.Team) *TeamSelectionDTO {
 	return &dto
 
 }
+
+func MapRosterSlotInsertionDTO(dto *RosterSlotInsertionDTO) *domain.RosterSlot {
+
+	var rosterSlot domain.RosterSlot
+
+	rosterSlot.TeamID = dto.TeamID
+	rosterSlot.Week = dto.Week
+	rosterSlot.Year = dto.Year
+	rosterSlot.Position = dto.Position
+	rosterSlot.Benched = dto.Benched
+	rosterSlot.ProjectedPoints = dto.ProjectedPoints
+	rosterSlot.ActualPoints = dto.ActualPoints
+
+	return &rosterSlot
+
+}

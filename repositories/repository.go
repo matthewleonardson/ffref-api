@@ -7,10 +7,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/matthewleonardson/ffref-api/database"
 	"github.com/matthewleonardson/ffref-api/domain"
-	"github.com/matthewleonardson/ffref-api/dto"
 )
 
-func InsertTeam(team *domain.Team) (*dto.TeamSelectionDTO, error) {
+func InsertTeam(team *domain.Team) (*domain.Team, error) {
 
 	query := `INSERT INTO teams (team_name, manager, year_joined, year_left, created_at) VALUES (@teamName, @manager, @yearJoined, @yearLeft, @createdAt) RETURNING id, created_at, updated_at`
 
@@ -28,13 +27,13 @@ func InsertTeam(team *domain.Team) (*dto.TeamSelectionDTO, error) {
 		return nil, err
 	}
 
-	return dto.MapTeamSelectionDTO(team), nil
+	return team, nil
 
 }
 
-func SelectTeams() ([]dto.TeamSelectionDTO, error) {
+func SelectTeams() ([]domain.Team, error) {
 
-	query := `SELECT id, team_name, manager, year_joined, year_left FROM teams ORDER BY id`
+	query := `SELECT id, team_name, manager, year_joined, year_left, created_at, updated_at FROM teams ORDER BY id`
 
 	rows, err := database.DB.Db.Query(context.Background(), query)
 
@@ -44,36 +43,102 @@ func SelectTeams() ([]dto.TeamSelectionDTO, error) {
 
 	defer rows.Close()
 
-	var dtoSlice = []dto.TeamSelectionDTO{}
+	var teams = []domain.Team{}
 
 	for rows.Next() {
-		var dto dto.TeamSelectionDTO
-		err = rows.Scan(&dto.ID, &dto.TeamName, &dto.Manager, &dto.YearJoined, &dto.YearLeft)
+		var team domain.Team
+		err = rows.Scan(&team.ID, &team.TeamName, &team.Manager, &team.YearJoined, &team.YearLeft, &team.CreatedAt, &team.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
-		dtoSlice = append(dtoSlice, dto)
+		teams = append(teams, team)
 	}
 
-	return dtoSlice, nil
+	return teams, nil
 
 }
 
-func SelectTeam(id *int) (*dto.TeamSelectionDTO, error) {
+func SelectTeam(id *int) (*domain.Team, error) {
 
-	query := `SELECT id, team_name, manager, year_joined, year_left FROM teams WHERE id = @id`
+	query := `SELECT id, team_name, manager, year_joined, year_left, created_at, updated_at FROM teams WHERE id = @id`
 
 	args := pgx.NamedArgs{
 		"id": *id,
 	}
 
-	var dto dto.TeamSelectionDTO
+	var team domain.Team
 
-	err := database.DB.Db.QueryRow(context.Background(), query, args).Scan(&dto.ID, &dto.TeamName, &dto.Manager, &dto.YearJoined, &dto.YearLeft)
+	err := database.DB.Db.QueryRow(context.Background(), query, args).Scan(&team.ID, &team.TeamName, &team.Manager, &team.YearJoined, &team.YearLeft, &team.CreatedAt, &team.UpdatedAt)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &dto, nil
+	return &team, nil
+}
+
+func SelectPlayerByName(name *string) (*domain.Player, error) {
+
+	query := `SELECT id, player_name, created_at, updated_at FROM players WHERE player_name = @name`
+
+	args := pgx.NamedArgs{
+		"name": *name,
+	}
+
+	var player domain.Player
+
+	err := database.DB.Db.QueryRow(context.Background(), query, args).Scan(&player.ID, &player.PlayerName, &player.CreatedAt, &player.UpdatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &player, nil
+
+}
+
+func InsertPlayer(player *domain.Player) (*domain.Player, error) {
+
+	query := `INSERT INTO players (player_name, created_at) VALUES (@playerName, @createdAt) RETURNING id, created_at, updated_at`
+
+	args := pgx.NamedArgs{
+		"playerName": player.PlayerName,
+		"createdAt":  time.Now(),
+	}
+
+	err := database.DB.Db.QueryRow(context.Background(), query, args).Scan(&player.ID, &player.CreatedAt, &player.UpdatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return player, nil
+
+}
+
+func InsertRosterSlot(rosterSlot *domain.RosterSlot) (*domain.RosterSlot, error) {
+
+	query := `INSERT INTO roster_slot (player_id, team_id, week, year, position, benched, projected_points, actual_points, created_at) 
+				VALUES (@playerID, @teamID, @week, @year, @position, @benched, @projectedPoints, @actualPoints, @createdAt) RETURNING id, created_at, updated_at`
+
+	args := pgx.NamedArgs{
+		"playerID":        rosterSlot.PlayerID,
+		"teamID":          rosterSlot.TeamID,
+		"week":            rosterSlot.Week,
+		"year":            rosterSlot.Year,
+		"position":        rosterSlot.Position,
+		"benched":         rosterSlot.Benched,
+		"projectedPoints": rosterSlot.ProjectedPoints,
+		"actualPoints":    rosterSlot.ActualPoints,
+		"createdAt":       time.Now(),
+	}
+
+	err := database.DB.Db.QueryRow(context.Background(), query, args).Scan(&rosterSlot.ID, &rosterSlot.CreatedAt, &rosterSlot.UpdatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rosterSlot, nil
+
 }

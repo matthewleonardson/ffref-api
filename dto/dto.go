@@ -11,3 +11,14 @@ type TeamSelectionDTO struct {
 	ID *int `json:"id"`
 	TeamInsertionDTO
 }
+
+type RosterSlotInsertionDTO struct {
+	PlayerName      *string  `json:"player_name"`
+	TeamID          *int     `json:"team_id"`
+	Week            *int     `json:"week"`
+	Year            *int     `json:"year"`
+	Position        *string  `json:"position"`
+	Benched         *bool    `json:"benched"`
+	ProjectedPoints *float32 `json:"projected_points"`
+	ActualPoints    *float32 `json:"actual_points"`
+}
