@@ -150,3 +150,35 @@ func InsertRosterSlot(rosterSlot *domain.RosterSlot) (*domain.RosterSlot, error)
 	return rosterSlot, nil
 
 }
+
+func SelectPlayerHistoryByIDAndYear(id *int, year *int) ([]domain.RosterSlot, error) {
+
+	query := `SELECT id, player_id, team_id, week, year, position, benched, projected_points, actual_points, created_at, updated_at FROM roster_slot WHERE player_id = @id AND year = @year ORDER BY week`
+
+	args := pgx.NamedArgs{
+		"id":   id,
+		"year": year,
+	}
+
+	rows, err := database.DB.Db.Query(context.Background(), query, args)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var rosterSlots = []domain.RosterSlot{}
+
+	for rows.Next() {
+		var slot domain.RosterSlot
+		err = rows.Scan(&slot.ID, &slot.PlayerID, &slot.TeamID, &slot.Week, &slot.Year, &slot.Position, &slot.Benched, &slot.ProjectedPoints, &slot.ActualPoints, &slot.CreatedAt, &slot.UpdatedAt)
+		if err != nil {
+			return nil, err
+		}
+		rosterSlots = append(rosterSlots, slot)
+	}
+
+	return rosterSlots, nil
+
+}

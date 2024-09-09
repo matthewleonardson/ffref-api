@@ -37,6 +37,7 @@ func MapRosterSlotInsertionDTO(dto *RosterSlotInsertionDTO) *domain.RosterSlot {
 	rosterSlot.Week = dto.Week
 	rosterSlot.Year = dto.Year
 	rosterSlot.Position = dto.Position
+	rosterSlot.Benched = dto.Benched
 	rosterSlot.ProjectedPoints = dto.ProjectedPoints
 	rosterSlot.ActualPoints = dto.ActualPoints
 
@@ -44,9 +45,9 @@ func MapRosterSlotInsertionDTO(dto *RosterSlotInsertionDTO) *domain.RosterSlot {
 
 }
 
-func MapRosterSlotSelectionDTO(rosterSlot *domain.RosterSlot) *RosterSlotSelectionDTO {
+func MapRosterSlotResponseDTO(rosterSlot *domain.RosterSlot) *RosterSlotResponseDTO {
 
-	var dto RosterSlotSelectionDTO
+	var dto RosterSlotResponseDTO
 
 	dto.ID = rosterSlot.ID
 	dto.PlayerID = rosterSlot.PlayerID
@@ -71,4 +72,18 @@ func MapPlayerSelectionDTO(player *domain.Player) *PlayerSelectionDTO {
 
 	return &dto
 
+}
+
+func MapRosterSlotSelectionDTO(rosterSlot *domain.RosterSlot) *RosterSlotSelectionDTO {
+
+	var dto RosterSlotSelectionDTO
+
+	dto.Week = rosterSlot.Week
+	dto.Year = rosterSlot.Year
+	dto.Position = rosterSlot.Position
+	dto.Benched = rosterSlot.Benched
+	dto.ProjectedPoints = rosterSlot.ProjectedPoints
+	dto.ActualPoints = rosterSlot.ActualPoints
+
+	return &dto
 }

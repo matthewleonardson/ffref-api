@@ -85,7 +85,7 @@ func ProcessCreateRosterSlot(c *gin.Context, rosterSlotDTO *dto.RosterSlotInsert
 	if err != nil {
 		c.IndentedJSON(410, gin.H{"status_code": http.StatusBadRequest})
 	} else {
-		c.IndentedJSON(http.StatusOK, dto.MapRosterSlotSelectionDTO(updatedRosterSlot))
+		c.IndentedJSON(http.StatusOK, dto.MapRosterSlotResponseDTO(updatedRosterSlot))
 	}
 
 }
@@ -100,4 +100,36 @@ func ProcessReadPlayer(c *gin.Context, name *string) {
 		c.IndentedJSON(http.StatusOK, dto.MapPlayerSelectionDTO(response))
 	}
 
+}
+
+func ProcessReadPlayerHistory(c *gin.Context, name *string, year *int) {
+
+	player, err := repositories.SelectPlayerByName(name)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+	}
+
+	response, err := repositories.SelectPlayerHistoryByIDAndYear(player.ID, year)
+
+	var dtos = []dto.RosterSlotSelectionDTO{}
+	for _, x := range response {
+
+		dto := dto.MapRosterSlotSelectionDTO(&x)
+		team, err := repositories.SelectTeam(x.TeamID)
+
+		if err != nil {
+			c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+		}
+
+		dto.Team = team.TeamName
+
+		dtos = append(dtos, *dto)
+	}
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+	} else {
+		c.IndentedJSON(http.StatusOK, dtos)
+	}
 }

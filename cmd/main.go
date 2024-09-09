@@ -17,11 +17,12 @@ func main() {
 
 	baseEndpoint := os.Getenv("BASE_ENDPOINT")
 
-	router.POST(baseEndpoint + "/team", handlers.CreateTeam)
-	router.GET(baseEndpoint + "/team", handlers.ReadTeams)
-	router.POST(baseEndpoint + "/rosterslot", handlers.CreateRosterSlot)
-	router.GET(baseEndpoint + "/team/:id", handlers.ReadTeam)
-	router.GET(baseEndpoint + "/player/:name", handlers.ReadPlayer)
+	router.POST(baseEndpoint+"/team", handlers.CreateTeam)
+	router.GET(baseEndpoint+"/team", handlers.ReadTeams)
+	router.POST(baseEndpoint+"/rosterslot", handlers.CreateRosterSlot)
+	router.GET(baseEndpoint+"/team/:id", handlers.ReadTeam)
+	router.GET(baseEndpoint+"/player/:name", handlers.ReadPlayer)
+	router.GET(baseEndpoint+"/player/:name/:year", handlers.ReadPlayerHistory)
 
 	router.Run(fmt.Sprintf(":%s", os.Getenv("API_PORT")))
 

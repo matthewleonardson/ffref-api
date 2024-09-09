@@ -51,3 +51,17 @@ func ReadPlayer(c *gin.Context) {
 	processors.ProcessReadPlayer(c, &name)
 
 }
+
+func ReadPlayerHistory(c *gin.Context) {
+
+	name := strings.ReplaceAll(c.Param("name"), "-", " ")
+	year, err := strconv.Atoi(c.Param("year"))
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error_code": http.StatusBadRequest})
+		return
+	}
+
+	processors.ProcessReadPlayerHistory(c, &name, &year)
+
+}
