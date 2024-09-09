@@ -37,7 +37,6 @@ func MapRosterSlotInsertionDTO(dto *RosterSlotInsertionDTO) *domain.RosterSlot {
 	rosterSlot.Week = dto.Week
 	rosterSlot.Year = dto.Year
 	rosterSlot.Position = dto.Position
-	rosterSlot.Benched = dto.Benched
 	rosterSlot.ProjectedPoints = dto.ProjectedPoints
 	rosterSlot.ActualPoints = dto.ActualPoints
 

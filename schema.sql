@@ -57,7 +57,7 @@ CREATE TABLE public.teams (
 -- DROP TABLE public.roster_slot;
 
 CREATE TABLE public.roster_slot (
-	id int4 NOT NULL,
+	id int4 DEFAULT nextval('roster_slot_serial'::regclass) NOT NULL,
 	player_id int4 NOT NULL,
 	team_id int4 NOT NULL,
 	week int4 NOT NULL,

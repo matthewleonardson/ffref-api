@@ -15,11 +15,13 @@ func main() {
 
 	router := gin.Default()
 
-	router.POST("/team", handlers.CreateTeam)
-	router.GET("/team", handlers.ReadTeams)
-	router.POST("/rosterslot", handlers.CreateRosterSlot)
-	router.GET("/team/:id", handlers.ReadTeam)
-	router.GET("/player/:name", handlers.ReadPlayer)
+	baseEndpoint := os.Getenv("BASE_ENDPOINT")
+
+	router.POST(baseEndpoint + "/team", handlers.CreateTeam)
+	router.GET(baseEndpoint + "/team", handlers.ReadTeams)
+	router.POST(baseEndpoint + "/rosterslot", handlers.CreateRosterSlot)
+	router.GET(baseEndpoint + "/team/:id", handlers.ReadTeam)
+	router.GET(baseEndpoint + "/player/:name", handlers.ReadPlayer)
 
 	router.Run(fmt.Sprintf(":%s", os.Getenv("API_PORT")))
 
