@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"regexp"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -79,10 +80,13 @@ func SelectTeam(id *int) (*domain.Team, error) {
 
 func SelectPlayerByName(name *string) (*domain.Player, error) {
 
-	query := `SELECT id, player_name, created_at, updated_at FROM players WHERE UPPER(player_name) = UPPER(@name)`
+	reg, _ := regexp.Compile("[^A-Za-z0-9 ]+")
+	searchableName := string(reg.ReplaceAll([]byte(*name), []byte("")))
+
+	query := `SELECT id, player_name, created_at, updated_at FROM players WHERE UPPER(searchable_name) = UPPER(@searchableName)`
 
 	args := pgx.NamedArgs{
-		"name": *name,
+		"searchableName": searchableName,
 	}
 
 	var player domain.Player
@@ -99,11 +103,15 @@ func SelectPlayerByName(name *string) (*domain.Player, error) {
 
 func InsertPlayer(player *domain.Player) (*domain.Player, error) {
 
-	query := `INSERT INTO players (player_name, created_at) VALUES (@playerName, @createdAt) RETURNING id, created_at, updated_at`
+	reg, _ := regexp.Compile("[^A-Za-z0-9 ]+")
+	searchableName := string(reg.ReplaceAll([]byte(*player.PlayerName), []byte("")))
+
+	query := `INSERT INTO players (player_name, created_at, searchable_name) VALUES (@playerName, @createdAt, @searchableName) RETURNING id, created_at, updated_at`
 
 	args := pgx.NamedArgs{
-		"playerName": player.PlayerName,
-		"createdAt":  time.Now(),
+		"playerName":     player.PlayerName,
+		"createdAt":      time.Now(),
+		"searchableName": searchableName,
 	}
 
 	err := database.DB.Db.QueryRow(context.Background(), query, args).Scan(&player.ID, &player.CreatedAt, &player.UpdatedAt)

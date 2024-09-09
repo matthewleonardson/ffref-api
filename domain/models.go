@@ -26,7 +26,7 @@ type RosterSlot struct {
 	Week            *int
 	Year            *int
 	Position        *string
-	Benched         *bool
+	Benched         bool
 	ProjectedPoints *float32
 	ActualPoints    *float32
 	CreatedAt       *time.Time

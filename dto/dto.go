@@ -18,7 +18,7 @@ type RosterSlotInsertionDTO struct {
 	Week            *int     `json:"week"`
 	Year            *int     `json:"year"`
 	Position        *string  `json:"position"`
-	Benched         *bool    `json:"benched"`
+	Benched         bool     `json:"benched"`
 	ProjectedPoints *float32 `json:"projected_points"`
 	ActualPoints    *float32 `json:"actual_points"`
 }
@@ -30,7 +30,7 @@ type RosterSlotSelectionDTO struct {
 	Week            *int     `json:"week"`
 	Year            *int     `json:"year"`
 	Position        *string  `json:"position"`
-	Benched         *bool    `json:"benched"`
+	Benched         bool     `json:"benched"`
 	ProjectedPoints *float32 `json:"projected_points"`
 	ActualPoints    *float32 `json:"actual_points"`
 }
