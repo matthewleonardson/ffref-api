@@ -102,7 +102,40 @@ func ProcessReadPlayer(c *gin.Context, name *string) {
 
 }
 
-func ProcessReadPlayerHistory(c *gin.Context, name *string, year *int) {
+func ProcessReadPlayerHistory(c *gin.Context, name *string) {
+
+	player, err := repositories.SelectPlayerByName(name)
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+	}
+
+	response, err := repositories.SelectPlayerHistoryByID(player.ID)
+
+	var dtos = []dto.RosterSlotSelectionDTO{}
+	for _, x := range response {
+
+		dto := dto.MapRosterSlotSelectionDTO(&x)
+		team, err := repositories.SelectTeam(x.TeamID)
+
+		if err != nil {
+			c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+		}
+
+		dto.Team = team.TeamName
+
+		dtos = append(dtos, *dto)
+	}
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+	} else {
+		c.IndentedJSON(http.StatusOK, dtos)
+	}
+
+}
+
+func ProcessReadPlayerHistoryByYear(c *gin.Context, name *string, year *int) {
 
 	player, err := repositories.SelectPlayerByName(name)
 

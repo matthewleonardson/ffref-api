@@ -55,6 +55,13 @@ func ReadPlayer(c *gin.Context) {
 func ReadPlayerHistory(c *gin.Context) {
 
 	name := strings.ReplaceAll(c.Param("name"), "-", " ")
+	processors.ProcessReadPlayerHistory(c, &name)
+
+}
+
+func ReadPlayerHistoryByYear(c *gin.Context) {
+
+	name := strings.ReplaceAll(c.Param("name"), "-", " ")
 	year, err := strconv.Atoi(c.Param("year"))
 
 	if err != nil {
@@ -62,6 +69,6 @@ func ReadPlayerHistory(c *gin.Context) {
 		return
 	}
 
-	processors.ProcessReadPlayerHistory(c, &name, &year)
+	processors.ProcessReadPlayerHistoryByYear(c, &name, &year)
 
 }

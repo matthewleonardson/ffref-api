@@ -22,7 +22,8 @@ func main() {
 	router.POST(baseEndpoint+"/rosterslot", handlers.CreateRosterSlot)
 	router.GET(baseEndpoint+"/team/:id", handlers.ReadTeam)
 	router.GET(baseEndpoint+"/player/:name", handlers.ReadPlayer)
-	router.GET(baseEndpoint+"/player/:name/:year", handlers.ReadPlayerHistory)
+	router.GET(baseEndpoint+"/player/:name/history", handlers.ReadPlayerHistory)
+	router.GET(baseEndpoint+"/player/:name/history/:year", handlers.ReadPlayerHistoryByYear)
 
 	router.Run(fmt.Sprintf(":%s", os.Getenv("API_PORT")))
 
