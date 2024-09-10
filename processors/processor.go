@@ -130,7 +130,7 @@ func ProcessReadPlayerHistory(c *gin.Context, name *string) {
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
 	} else {
-		c.IndentedJSON(http.StatusOK, dtos)
+		c.IndentedJSON(http.StatusOK, gin.H{"player_name": player.PlayerName, "history": dtos})
 	}
 
 }
@@ -163,6 +163,6 @@ func ProcessReadPlayerHistoryByYear(c *gin.Context, name *string, year *int) {
 	if err != nil {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
 	} else {
-		c.IndentedJSON(http.StatusOK, dtos)
+		c.IndentedJSON(http.StatusOK, gin.H{"player_name": player.PlayerName, "history": dtos})
 	}
 }
