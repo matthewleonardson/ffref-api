@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	handlers "github.com/matthewleonardson/ffref-api/controllers"
 	"github.com/matthewleonardson/ffref-api/database"
+	"github.com/gin-contrib/cors"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 
 	baseEndpoint := os.Getenv("BASE_ENDPOINT")
 
+	router.Use(cors.Default())
 	router.POST(baseEndpoint+"/team", handlers.CreateTeam)
 	router.GET(baseEndpoint+"/team", handlers.ReadTeams)
 	router.POST(baseEndpoint+"/rosterslot", handlers.CreateRosterSlot)
