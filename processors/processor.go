@@ -166,3 +166,15 @@ func ProcessReadPlayerHistoryByYear(c *gin.Context, name *string, year *int) {
 		c.IndentedJSON(http.StatusOK, gin.H{"player_name": player.PlayerName, "history": dtos})
 	}
 }
+
+func ProcessReadRandomPlayer(c *gin.Context) {
+
+	response, err := repositories.SelectRandomPlayer()
+
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"status_code": http.StatusBadRequest})
+	} else {
+		c.IndentedJSON(http.StatusOK, dto.MapPlayerSelectionDTO(response))
+	}
+
+}

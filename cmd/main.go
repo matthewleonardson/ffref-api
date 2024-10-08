@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	handlers "github.com/matthewleonardson/ffref-api/controllers"
 	"github.com/matthewleonardson/ffref-api/database"
-	"github.com/gin-contrib/cors"
 )
 
 func main() {
@@ -26,6 +26,7 @@ func main() {
 	router.GET(baseEndpoint+"/player/:name", handlers.ReadPlayer)
 	router.GET(baseEndpoint+"/player/:name/history", handlers.ReadPlayerHistory)
 	router.GET(baseEndpoint+"/player/:name/history/:year", handlers.ReadPlayerHistoryByYear)
+	router.GET(baseEndpoint+"/player/random", handlers.ReadRandomPlayer)
 
 	router.Run(fmt.Sprintf(":%s", os.Getenv("API_PORT")))
 

@@ -101,6 +101,21 @@ func SelectPlayerByName(name *string) (*domain.Player, error) {
 
 }
 
+func SelectRandomPlayer() (*domain.Player, error) {
+
+	query := `SELECT id, player_name, created_at, updated_at FROM players ORDER BY RANDOM() LIMIT 1`
+
+	var player domain.Player
+
+	err := database.DB.Db.QueryRow(context.Background(), query).Scan(&player.ID, &player.PlayerName, &player.CreatedAt, &player.UpdatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &player, nil
+}
+
 func InsertPlayer(player *domain.Player) (*domain.Player, error) {
 
 	reg, _ := regexp.Compile("[^A-Za-z0-9 ]+")

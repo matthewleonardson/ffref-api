@@ -72,3 +72,9 @@ func ReadPlayerHistoryByYear(c *gin.Context) {
 	processors.ProcessReadPlayerHistoryByYear(c, &name, &year)
 
 }
+
+func ReadRandomPlayer(c *gin.Context) {
+
+	processors.ProcessReadRandomPlayer(c)
+
+}
